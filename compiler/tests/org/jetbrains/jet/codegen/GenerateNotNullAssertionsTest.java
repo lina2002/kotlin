@@ -35,6 +35,7 @@ import org.jetbrains.jet.lang.resolve.java.PackageClassUtils;
 import org.jetbrains.jet.lang.resolve.name.FqName;
 
 import java.io.File;
+import java.lang.reflect.Method;
 
 import static org.jetbrains.jet.codegen.CodegenTestUtil.compileJava;
 import static org.jetbrains.jet.codegen.CodegenTestUtil.generateFiles;
@@ -55,20 +56,21 @@ public class GenerateNotNullAssertionsTest extends CodegenTestCase {
         myEnvironment = new JetCoreEnvironment(getTestRootDisposable(), configuration);
     }
 
-    private void doTestGenerateAssertions(boolean generateAssertions, String ktFile) throws Exception {
+    private void doTestGenerateAssertions(boolean generateAssertions) throws Exception {
         File javaClassesTempDirectory = compileJava("notNullAssertions/A.java");
 
         setUpEnvironment(generateAssertions, false, javaClassesTempDirectory);
 
-        blackBoxMultiFile("notNullAssertions/AssertionChecker.kt", ktFile);
+        loadFiles("notNullAssertions/AssertionChecker.kt");
+        generateFunction("checkAssertions").invoke(null, generateAssertions);
     }
 
     public void testGenerateAssertions() throws Exception {
-        doTestGenerateAssertions(true, "notNullAssertions/doGenerateAssertions.kt");
+        doTestGenerateAssertions(true);
     }
 
     public void testDoNotGenerateAssertions() throws Exception {
-        doTestGenerateAssertions(false, "notNullAssertions/doNotGenerateAssertions.kt");
+        doTestGenerateAssertions(false);
     }
 
     public void testNoAssertionsForKotlinFromSource() throws Exception {
