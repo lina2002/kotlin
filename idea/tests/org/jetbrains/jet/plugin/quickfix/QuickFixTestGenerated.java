@@ -404,6 +404,16 @@ public class QuickFixTestGenerated extends AbstractQuickFixTest {
         public void testFinalTrait() throws Exception {
             doTest("idea/testData/quickfix/modifiers/beforeFinalTrait.kt");
         }
+
+        @TestMetadata("beforeIllegalEnumAnnotation1.kt")
+        public void testIllegalEnumAnnotation1() throws Exception {
+            doTest("idea/testData/quickfix/modifiers/beforeIllegalEnumAnnotation1.kt");
+        }
+
+        @TestMetadata("beforeIllegalEnumAnnotation2.kt")
+        public void testIllegalEnumAnnotation2() throws Exception {
+            doTest("idea/testData/quickfix/modifiers/beforeIllegalEnumAnnotation2.kt");
+        }
         
         @TestMetadata("beforeOpenMemberInFinalClass1.kt")
         public void testOpenMemberInFinalClass1() throws Exception {
