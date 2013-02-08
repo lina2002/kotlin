@@ -25,8 +25,8 @@ import org.jetbrains.jet.lang.psi.JetFile;
 import org.jetbrains.jet.lang.resolve.AnalyzerScriptParameter;
 import org.jetbrains.jet.lang.resolve.name.Name;
 import org.jetbrains.jet.lang.types.ref.JetTypeName;
-import org.jetbrains.jet.parsing.JetParsingTest;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -86,7 +86,7 @@ public class CodegenTestFiles {
         ArrayList<JetFile> files = new ArrayList<JetFile>();
         for (String name : names) {
             try {
-                String content = JetTestUtils.doLoadFile(JetParsingTest.getTestDataDir() + "/codegen/", name);
+                String content = JetTestUtils.doLoadFile(new File(name));
                 int i = name.lastIndexOf('/');
                 //name = name.substring(i+1);
                 JetFile file = JetTestUtils.createFile(name, content, project);
