@@ -185,25 +185,25 @@ public class PrimitiveTypesTest extends CodegenTestCase {
     }
 
     public void testPreDecrement() throws Exception {
-        loadText("fun foo(var a: Int): Int { return --a;}");
+        loadText("fun foo(a0: Int): Int { var a = a0; return --a;}");
         final Method main = generateFunction();
         assertEquals(9, main.invoke(null, 10));
     }
 
     public void testPreIncrementLong() throws Exception {
-        loadText("fun foo(var a: Long): Long = ++a");
+        loadText("fun foo(a0: Long): Long { var a = a0; return ++a}");
         final Method main = generateFunction();
         assertEquals(11L, main.invoke(null, 10L));
     }
 
     public void testPreIncrementFloat() throws Exception {
-        loadText("fun foo(var a: Float): Float = ++a");
+        loadText("fun foo(a0: Float): Float { var a = a0; return ++a }");
         final Method main = generateFunction();
         assertEquals(2.0f, main.invoke(null, 1.0f));
     }
 
     public void testPreIncrementDouble() throws Exception {
-        loadText("fun foo(var a: Double): Double = ++a");
+        loadText("fun foo(a0: Double): Double {var a = a0; return ++a }");
         final Method main = generateFunction();
         assertEquals(2.0, main.invoke(null, 1.0));
     }
@@ -270,25 +270,5 @@ public class PrimitiveTypesTest extends CodegenTestCase {
         loadText(text);
         final Method main = generateFunction();
         assertEquals(expected, main.invoke(null, arg1, arg2));
-    }
-
-    public void testSureNonnull () throws Exception {
-        loadText("fun box() = 10!!.toString()");
-        assertFalse(generateToText().contains("IFNONNULL"));
-    }
-
-    public void testSureNullable () throws Exception {
-        loadText("val a : Int? = 10; fun box() = a!!.toString()");
-        assertTrue(generateToText().contains("IFNONNULL"));
-    }
-
-    public void testSafeNonnull () throws Exception {
-        loadText("fun box() = 10?.toString()");
-        assertFalse(generateToText().contains("IFNULL"));
-    }
-
-    public void testSafeNullable () throws Exception {
-        loadText("val a : Int? = 10; fun box() = a?.toString()");
-        assertTrue(generateToText().contains("IFNULL"));
     }
 }

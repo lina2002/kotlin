@@ -20,17 +20,16 @@ import junit.framework.TestCase;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jet.checkers.AbstractDiagnosticsTestWithEagerResolve;
 import org.jetbrains.jet.checkers.AbstractJetPsiCheckerTest;
+import org.jetbrains.jet.codegen.AbstractBytecodeTextTest;
 import org.jetbrains.jet.codegen.AbstractCheckLocalVariablesTableTest;
-import org.jetbrains.jet.codegen.AbstractDataClassCodegenTest;
-import org.jetbrains.jet.codegen.AbstractJavaVisibilityTest;
 import org.jetbrains.jet.codegen.defaultConstructor.AbstractDefaultConstructorCodegenTest;
 import org.jetbrains.jet.codegen.flags.AbstractWriteFlagsTest;
 import org.jetbrains.jet.codegen.generated.AbstractBlackBoxCodegenTest;
-import org.jetbrains.jet.codegen.generated.AbstractRangesCodegenTest;
 import org.jetbrains.jet.jvm.compiler.*;
 import org.jetbrains.jet.lang.resolve.lazy.AbstractLazyResolveDescriptorRendererTest;
 import org.jetbrains.jet.lang.resolve.lazy.AbstractLazyResolveNamespaceComparingTest;
 import org.jetbrains.jet.lang.resolve.lazy.AbstractLazyResolveTest;
+import org.jetbrains.jet.plugin.codeInsight.surroundWith.AbstractSurroundWithTest;
 import org.jetbrains.jet.plugin.highlighter.AbstractDeprecatedHighlightingTest;
 import org.jetbrains.jet.plugin.quickfix.AbstractQuickFixMultiFileTest;
 import org.jetbrains.jet.plugin.quickfix.AbstractQuickFixTest;
@@ -69,41 +68,41 @@ public class GenerateTests {
                 testModel("compiler/testData/diagnostics/tests/script", true, "ktscript", "doTest")
         );
 
-        generateTest(
-                "compiler/tests/",
-                "BlackBoxCodegenTestGenerated",
-                AbstractBlackBoxCodegenTest.class,
-                testModel("compiler/testData/codegen/box", "blackBoxFileByFullPath")
-        );
-
         GenerateRangesCodegenTestData.main(args);
 
         generateTest(
                 "compiler/tests/",
-                "RangesCodegenTestGenerated",
-                AbstractRangesCodegenTest.class,
-                testModel("compiler/testData/codegen/ranges", "blackBoxFileByFullPath")
+                "BlackBoxCodegenTestGenerated",
+                AbstractBlackBoxCodegenTest.class,
+                testModel("compiler/testData/codegen/box", "doTest")
+        );
+
+        generateTest(
+                "compiler/tests/",
+                "BlackBoxMultiFileCodegenTestGenerated",
+                AbstractBlackBoxCodegenTest.class,
+                new SimpleTestClassModel(new File("compiler/testData/codegen/boxMultiFile"), false, Pattern.compile("^(.+)$"), "doTestMultiFile")
         );
 
         generateTest(
                 "compiler/tests/",
                 "BlackBoxWithJavaCodegenTestGenerated",
                 AbstractBlackBoxCodegenTest.class,
-                testModel("compiler/testData/codegen/boxWithJava", "blackBoxFileWithJavaByFullPath")
+                testModel("compiler/testData/codegen/boxWithJava", "doTestWithJava")
         );
 
         generateTest(
                 "compiler/tests/",
-                "DataClassCodegenTestGenerated",
-                AbstractDataClassCodegenTest.class,
-                testModel("compiler/testData/codegen/dataClasses", "blackBoxFileByFullPath")
+                "BlackBoxWithStdlibCodegenTestGenerated",
+                AbstractBlackBoxCodegenTest.class,
+                testModel("compiler/testData/codegen/boxWithStdlib", "doTestWithStdlib")
         );
 
         generateTest(
                 "compiler/tests/",
-                "JavaVisibilityTestGenerated",
-                AbstractJavaVisibilityTest.class,
-                testModel("compiler/testData/codegen/visibility", "blackBoxFileWithJavaByFullPath")
+                "BytecodeTextTestGenerated",
+                AbstractBytecodeTextTest.class,
+                testModel("compiler/testData/codegen/bytecodeText")
         );
 
         generateTest(
@@ -222,6 +221,27 @@ public class GenerateTests {
                 "DeprecatedHighlightingTestGenerated",
                 AbstractDeprecatedHighlightingTest.class,
                 testModel("idea/testData/highlighter/deprecated")
+        );
+
+        generateTest(
+                "idea/tests/",
+                "SurroundWithIfTestGenerated",
+                AbstractSurroundWithTest.class,
+                testModel("idea/testData/codeInsight/surroundWith/if", "doTestWithIfSurrounder")
+        );
+
+        generateTest(
+                "idea/tests/",
+                "SurroundWithIfElseTestGenerated",
+                AbstractSurroundWithTest.class,
+                testModel("idea/testData/codeInsight/surroundWith/ifElse", "doTestWithIfElseSurrounder")
+        );
+
+        generateTest(
+                "idea/tests/",
+                "SurroundWithNotTestGenerated",
+                AbstractSurroundWithTest.class,
+                testModel("idea/testData/codeInsight/surroundWith/not", "doTestWithNotSurrounder")
         );
     }
 
